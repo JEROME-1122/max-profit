@@ -7,17 +7,20 @@
     <title>Document</title>
     <link href="css/index.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6F" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <body>
 
-    <div class="container">
-        <h2>Max Profit Calculator</h2>
-        <label for="time">Enter Time Units:</label>
-        <input type="number" id="time" placeholder="e.g. 13" min="1">
+    <div class="container ">
 
-        <button onclick="calculateProfit()">Calculate</button>
+        <div class=" mx-auto align-items-center justify-content-center text-center mt-5">
+            <h2>Max Profit Calculator</h2>
+            <label for="time">Enter Time Units:</label>
+            <input type="number" id="time" placeholder="e.g. 13" min="1">
+
+            <button onclick="calculateProfit()">Calculate</button>
+        </div>
+
 
         <div class="result" id="result"></div>
     </div>
