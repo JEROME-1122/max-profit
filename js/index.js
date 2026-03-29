@@ -8,7 +8,10 @@ function calculateProfit() {
   const T = { time: 5, earn: 1500 };
   const P = { time: 4, earn: 1000 };
   const C = { time: 10, earn: 2000 };
-  let best = { T: 0, P: 0, C: 0, earnings: 0 };
+ 
+
+  let bestEarning = 0;
+  let bestSolutions = [];
 
   for (let t = 0; t <= Math.min(10, n); t++) {
     for (let p = 0; p <= Math.min(10, n); p++) {
@@ -16,41 +19,68 @@ function calculateProfit() {
         const totalBuildTime = t * T.time + p * P.time + c * C.time;
         if (totalBuildTime > n) continue;
 
-        // After building, each building earns for (n - build finish time)
-        let tE = 0,
-          pE = 0,
-          cE = 0;
+        let tE = 0;
         let time = 0;
 
         // Build Theatres first
-        time += t * T.time;
-        if (time <= n) {
-          tE = t * T.earn * Math.max(0, n - time);
+        for (let i = 0; i < t; i++) {
+          time += T.time;
+          if (time <= n) {
+            tE += T.earn * (0, n - time);
+          }
         }
 
         // Build Pubs
-        time += p * P.time;
-        if (time <= n) {
-          pE = p * P.earn * Math.max(0, n - time);
+        for (let i = 0; i < p; i++) {
+          time += P.time;
+          if (time <= n) {
+            tE += P.earn * (0, n - time);
+          }
         }
 
         // Build Commercial Parks
-        time += c * C.time;
-        if (time <= n) {
-          cE = c * C.earn * Math.max(0, n - time);
+        for (let i = 0; i < c; i++) {
+          time += C.time;
+          if (time <= n) {
+            tE += C.earn * (0, n - time);
+          }
         }
 
-        const total = tE + pE + cE;
-        if (total > best.earnings) {
-          best = { T: t, P: p, C: c, earnings: total };
+        // const total = tE + pE + cE;
+        // if (total > best.earnings) {
+        //   best = { T: t, P: p, C: c, earnings: total };
+        // }
+
+        if (tE > bestEarning) {
+          bestEarning = tE;
+          bestSolutions = [{ T: t, P: p, C: c }];
+        } else if (tE === bestEarning) {
+          bestSolutions.push({ T: t, P: p, C: c });
         }
       }
     }
   }
 
-  document.getElementById("result").innerHTML = `
-        <strong>Input:</strong> n = ${n} units<br>
-        <strong>Output:</strong> T:${best.T} P:${best.P} C:${best.C}<br>
-        <strong>Earnings:</strong> $${best.earnings.toLocaleString()}
-      `;
+  const unique = [];
+  const seen = new Set();
+
+  for (let sol of bestSolutions) {
+    const key = `${sol.T}-${sol.P}-${sol.C}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(sol);
+    }
+  }
+
+  let output = `
+    <strong>Input:</strong> n = ${n} units<br>
+    <strong>Earnings:</strong> $${bestEarning.toLocaleString()}<br>
+    <strong>Solutions:</strong><br>
+    `;
+
+  unique.forEach((sol, i) => {
+    output += `${i + 1}. T:${sol.T} P:${sol.P} C:${sol.C}<br>`;
+  });
+
+  document.getElementById("result").innerHTML = output;
 }
